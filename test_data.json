@@ -5,12 +5,12 @@
       "output": null
     },
     {
-      "input": 32,
+      "input": 32.5,
       "output": null
     },
     {
-      "input": "ADD",
-      "output": 45
+      "input": "+",
+      "output": 45.5
     },
     {
       "input": 19,
@@ -21,8 +21,8 @@
       "output": null
     },
     {
-      "input": "MUL",
+      "input": "*",
       "output": 38
-    }
+    },
   ]
 }

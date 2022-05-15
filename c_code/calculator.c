@@ -31,9 +31,6 @@ int main()
            case '/':
              printf("%lf", num1/num2);
              break;
-           case 'E':
-             return 0;
-             break;
            default:
              printf("Error! Invalid Operator.");
          }
