@@ -9,20 +9,11 @@
       "output": null
     },
     {
-      "input": "+",
-      "output": 45.5
-    },
-    {
-      "input": 19,
-      "output": null
-    },
-    {
-      "input": 2,
-      "output": null
-    },
-    {
       "input": "*",
-      "output": 38
-    },
+      "output": {
+        "type": "float",
+        "value": "747.5"
+      }
+    }
   ]
 }
