@@ -1,0 +1,28 @@
+{
+  "commands": [
+    {
+      "input": 23,
+      "output": null
+    },
+    {
+      "input": 32,
+      "output": null
+    },
+    {
+      "input": "ADD",
+      "output": 45
+    },
+    {
+      "input": 19,
+      "output": null
+    },
+    {
+      "input": 2,
+      "output": null
+    },
+    {
+      "input": "MUL",
+      "output": 38
+    }
+  ]
+}
