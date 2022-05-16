@@ -2,21 +2,21 @@ import subprocess
 
 
 class SubConnector:
-    '''Allows to run C code from python using subprocess library'''
+    '''Allows running C code from python using subprocess library'''
 
     def __init__(self, c_file_path):
         self._c_file_path = c_file_path # path to the compiled (.exe) C file
         self._cmd = subprocess.Popen([f'./{c_file_path}'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
     def execute_cmd(self, command):
-        '''Execute command (pass the input in the shell)'''
+        '''Execute command (pass the input to the shell)'''
         self._cmd.stdin.write(
             (str(command) + '\n').encode('utf-8')
             # convert to string and add newline (emulate input confirm.) and convert to bytes
         )
 
     def get_full_output(self):
-        '''Get all the output from the subprocess'''
+        '''Return subprocess output'''
         self._cmd.stdin.flush()  # flush the buffer
 
         lines = []
@@ -28,7 +28,7 @@ class SubConnector:
         return lines
 
     def get_results(self, result_pattern='Result: '):
-        '''Get only results from the subprocess'''
+        '''Return only results from subprocess output'''
         out = self.get_full_output()
         print('OUT:', out)
         # return only the results (output lines that contain the result_pattern)
