@@ -1,0 +1,44 @@
+{
+  "tests": [
+    {
+      "name": "multiplication",
+      "commands": [
+        {
+          "input": 23,
+          "output": null
+        },
+        {
+          "input": 32.5,
+          "output": null
+        },
+        {
+          "input": "*",
+          "output": {
+            "type": "float",
+            "value": "747.5"
+          }
+        }
+      ]
+    },
+    {
+      "name": "division",
+      "commands": [
+        {
+          "input": 424.2,
+          "output": null
+        },
+        {
+          "input": 24.1532,
+          "output": null
+        },
+        {
+          "input": "/",
+          "output": {
+            "type": "float",
+            "value": "17.56289"
+          }
+        }
+      ]
+    }
+  ]
+}
