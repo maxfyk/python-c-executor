@@ -5,7 +5,7 @@ class SubConnector:
     '''Allows to run C code from python using subprocess library'''
 
     def __init__(self, c_file_path):
-        self._c_file_path = c_file_path # path to the compiled (.exe) C file
+        self._c_file_path = c_file_path  # path to the compiled (.exe) C file
         self._cmd = subprocess.Popen([f'./{c_file_path}'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
     def execute_cmd(self, command):
@@ -37,3 +37,8 @@ class SubConnector:
     def disconnect(self):
         '''Kill the subprocess'''
         self._cmd.kill()
+
+    def restart(self):
+        '''Restart the C program subprocess'''
+        self.disconnect()
+        self._cmd = subprocess.Popen([f'./{self._c_file_path}'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
