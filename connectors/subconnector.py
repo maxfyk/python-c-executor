@@ -5,8 +5,9 @@ class SubConnector:
     '''Allows running C code from python using subprocess library'''
 
     def __init__(self, c_file_path):
-        self._c_file_path = c_file_path  # path to the compiled (.exe) C file
-        self._cmd = subprocess.Popen([f'./{c_file_path}'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        # make file????
+        self._c_file_path = c_file_path  # path to the .c file
+        self._cmd = subprocess.Popen([f'make all & ./{c_file_path}'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
     def execute_cmd(self, command):
         '''Execute command (pass the input to the shell)'''
