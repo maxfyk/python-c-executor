@@ -10,7 +10,7 @@ uint16_t* str_to_bigint(char *number, short* len) {
     divide into 4 digits chunks (max value = 9999) 
     */
     uint16_t *int_array;
-	  char chunk[4];
+	  char chunk[CHUNK_SIZE];
     short chunk_num = 0;
     
     while(number[*len] == '0') { len++; } /*skip zeros*/
@@ -24,7 +24,8 @@ uint16_t* str_to_bigint(char *number, short* len) {
     short i;
     for(i = 0; i < *len; i+=CHUNK_SIZE) { /*loop trough number, divide it into CHUNK_SIZE chunks, convert to int and append to array*/
         strncpy(chunk, number + i, CHUNK_SIZE);
-        int_array[chunk_num] = atoi(chunk);
+        uint16_t int_chunk = atoi(chunk);
+        int_array[chunk_num] = int_chunk;
         chunk_num++;
     }
 
@@ -36,12 +37,19 @@ uint16_t* str_to_bigint(char *number, short* len) {
 uint16_t* add_bigints(uint16_t*bigint1, short* len1, uint16_t*bigint2, short* len2, short* len3) {
     short i, carry = 0, sum = 0;
     short len = *len1 > *len2 ? *len1 : *len2; /*get max length*/
+    short b1 = 0, b2 = 0, bi1 = 0, bi2 = 0;
     char chr_num[len + 1], chr_chunk[CHUNK_SIZE];
 
     /*write for loop to add 2 big integer numbers splitted into 4 digit arrays*/
 
     for(i = len; i >= 0; i--) { /*loop trough array and add numbers*/
-      sum = bigint1[i] + bigint2[i] + carry;
+      bi1 = i - (len - *len1);
+      bi2 = i - (len - *len2);
+      b1 = b1 < 0 || bi1 == 0 ? 0 : bigint1[bi1]; 
+      b2 = b2 < 0 || bi2 == 0 ? 0 : bigint2[bi1]; 
+      
+      sum = b1 + b2 + carry;
+
       if(sum > 9999) { /*if sum is bigger than 9999 - add carry*/
           sum -= 10000;
           carry = 1;
@@ -80,7 +88,7 @@ int main()
 		print_bigint(bigint1, &len1);
 
     /*Number 2*/
-    char number2[] = "815378786" /*"912415373636592080147267228649611544136934419016527019426904852909558630064154"*/;
+    char number2[] = "8153786" /*"912415373636592080147267228649611544136934419016527019426904852909558630064154"*/;
 
 		printf("String number2 %s\n", number2);
     short len2 = 0;
