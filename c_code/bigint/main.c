@@ -42,14 +42,27 @@ void print_bigint(uint16_t *bigint, short* len) {
 
 int main()
 {
-		char number[] = "115792089237316195423570985008687907853269984665640564039457584007913129639936";
+    /*Number 1*/
+		char number1[] = "115792089237316195423570985008687907853269984665640564039457584007913129639936";
 
-		printf("String number1 %s\n", number);
+		printf("String number1 %s\n", number1);
     short len1 = 0;
 
-		uint16_t* bigint1 = str_to_bigint(number, &len1);
+		uint16_t* bigint1 = str_to_bigint(number1, &len1);
 
 		printf("bigint array1 ");
 		print_bigint(bigint1, &len1);
+
+    /*Number 2*/
+    char number2[] = "912415373636592080147267228649611544136934419016527019426904852909558630064154";
+
+		printf("String number2 %s\n", number2);
+    short len2 = 0;
+
+		uint16_t* bigint2 = str_to_bigint(number2, &len2);
+
+		printf("bigint array2 ");
+		print_bigint(bigint2, &len2);
+
     return 0;
 }
