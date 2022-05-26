@@ -92,8 +92,7 @@ uint16_t* add_bigints(uint16_t*bigint1, short* len1, uint16_t*bigint2, short* le
     
     strncpy(chr_num, strrev(chr_num), out_len); // copy only the needed part of the number (without random symbols)
 
-    uint16_t* bigint3 = str_to_bigint(chr_num, len3);
-    return bigint3;
+    return str_to_bigint(chr_num, len3);
 }
 
 void print_bigint(uint16_t *bigint, short* len) {
