@@ -116,3 +116,36 @@ dmypy.json
 
 # manually added
 .idea/
+c_code/bigint.exe
+c_code/bigint/.vscode/c_cpp_properties.json
+c_code/bigint/.vscode/launch.json
+c_code/bigint/.vscode/settings.json
+c_code/bigint/.vscode/tasks.json
+c_code/bigint/bigint.exe
+c_code/bigint/bigint.uvguix.maxfyk
+c_code/bigint/bigint.uvoptx
+c_code/bigint/bigint.uvprojx
+c_code/bigint/DebugConfig/Target_1_STM32F407VGTx.dbgconf
+c_code/bigint/EventRecorderStub.scvd
+c_code/bigint/Listings/bigint.map
+c_code/bigint/main.exe
+c_code/bigint/Objects/bigint.axf
+c_code/bigint/Objects/bigint.build_log.htm
+c_code/bigint/Objects/bigint.htm
+c_code/bigint/Objects/bigint.lnp
+c_code/bigint/Objects/bigint_Target 1.dep
+c_code/bigint/Objects/main.__i
+c_code/bigint/Objects/main.d
+c_code/bigint/Objects/main.o
+c_code/bigint/Objects/startup_stm32f407xx.o
+c_code/bigint/Objects/system_stm32f4xx.d
+c_code/bigint/Objects/system_stm32f4xx.o
+c_code/bigint/RTE/_Target_1/RTE_Components.h
+c_code/bigint/RTE/Device/STM32F407VGTx/.startup_stm32f407xx.s@2.6.2
+c_code/bigint/RTE/Device/STM32F407VGTx/.system_stm32f4xx.c@2.6.3
+c_code/bigint/RTE/Device/STM32F407VGTx/startup_stm32f407xx.s
+c_code/bigint/RTE/Device/STM32F407VGTx/system_stm32f4xx.c
+c_code/calculator.exe
+c_code/calculator.exe
+c_code/calculator.exe
+c_code/calculator.exe

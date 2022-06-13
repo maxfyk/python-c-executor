@@ -5,32 +5,33 @@
 #include <math.h>
 
 #define CHUNK_SIZE 4
+#define IN_NUMBER_LEN 39 //128 bit
+
+
+#define NUMBER_SIZE IN_NUMBER_LEN //16 * CHUNK_SIZE
+#define OUT_NUMBER_LEN IN_NUMBER_LEN / CHUNK_SIZE + 1
+
 char EMPTY_CHUNK[CHUNK_SIZE];
-const short CARRY_THRESHOLD = pow(10, CHUNK_SIZE)  -1; // calculate the carry threshold (chunk size = 4 -> 9999)
+const short CARRY_THRESHOLD = pow(10, CHUNK_SIZE)  - 1; // calculate the carry threshold (chunk size = 4 -> 9999)
 
 void reverse_array(uint16_t arr[], short n);
 
 
-uint16_t* str_to_bigint(char *in_num, short* len) {
+void str_to_bigint(char *number, uint16_t* int_array) {
     /* Unsigned 16 bit number range: 0 to 65535 
     divide into 4 digits chunks (max value = 9999) 
     */
-    while(in_num[*len] == '0') *len+=1; //skip leading zeros
 
-    uint16_t *int_array;
-    short chunk_num = 0;
-	  char number[strlen(in_num) - *len], chunk[CHUNK_SIZE];
-    number[strlen(in_num) - *len] = '\0';
+    short chunk_num = 0, len = strlen(number);
+
+	  char chunk[CHUNK_SIZE];// number[strlen(number) - len];
     
     // get clean number, without leading zeros
-    memmove(number, in_num + *len, strlen(in_num) - *len);
+    //memmove(number, number, strlen(number));
 
-    *len = strlen(number);
-
-    int_array = malloc(*len * sizeof(uint16_t)); //allocate memory for array
 
     short i;
-    for(i = *len - CHUNK_SIZE; i >= 0; i-=CHUNK_SIZE) { //loop trough number in reverse, divide it into CHUNK_SIZE chunks, convert to int and append to array
+    for(i = len - CHUNK_SIZE; i >= 0; i-=CHUNK_SIZE) { //loop trough number in reverse, divide it into CHUNK_SIZE chunks, convert to int and append to array
         memset(chunk, 0, CHUNK_SIZE); // clear old chunk
         strncpy(chunk, number + i, CHUNK_SIZE); // copy new one
         uint16_t int_chunk = chunk == EMPTY_CHUNK ? 0 : atoi(chunk); // convert chars to int (if char consists of only zeros = 0)
@@ -44,29 +45,21 @@ uint16_t* str_to_bigint(char *in_num, short* len) {
       int_array[chunk_num] = int_chunk;
       chunk_num++; 
     }
-    
-    reverse_array(int_array, chunk_num); // reverse the number
-
-    *len = chunk_num; // update length
-
-    return int_array;
+    reverse_array(int_array, OUT_NUMBER_LEN); // reverse the number
 }
 
-uint16_t* add_bigints(uint16_t*bigint1, short* len1, uint16_t*bigint2, short* len2, short* len3) {
-    short b1 = 0, b2 = 0, bi1 = 0, bi2 = 0;
-    short i, carry = 0, sum = 0, out_len = 0;
+uint16_t* add_bigints(uint16_t bigint1[], uint16_t bigint2[], short* len3) {
+    short b1 = 0, b2 = 0;
+    short i, carry = 0, sum = 0, out_len = 0, chr_chunk_len = 0;
 
-    short len = *len1 > *len2 ? *len1 : *len2; //get max length
+    char chr_num[NUMBER_SIZE + 1], chr_chunk[CHUNK_SIZE];
+    *chr_num = '\0';
+    // chr_num[0] = '\0';
 
-    char chr_num[len * CHUNK_SIZE + 1], chr_chunk[CHUNK_SIZE];
-    chr_num[0] = '\0';
-
-    for(i = len - 1; i >= 0; i--) { // loop trough array and add numbers
-      bi1 = i - (len - *len1); // find the beggining of the array by calc. the diff. betweem max len and this->len
-      bi2 = i - (len - *len2);
-      b1 = bigint1[bi1], b2 = bigint2[bi2];
-      b1 = bi1 < 0 || b1 < 0 ? 0 : bigint1[bi1]; // if we are out of chunks -> set value to 0
-      b2 = bi2 < 0 || b2 < 0 ? 0 : bigint2[bi2]; 
+    for(i = OUT_NUMBER_LEN - 1; i >= 0; i--) { // loop trough array and add numbers
+      b1 = bigint1[i], b2 = bigint2[i];
+      b1 = b1 < 0 ? 0 : b1; // if we are out of chunks -> set value to 0
+      b2 = b2 < 0 ? 0 : b2; 
       
       sum = b1 + b2 + carry;
 
@@ -77,12 +70,13 @@ uint16_t* add_bigints(uint16_t*bigint1, short* len1, uint16_t*bigint2, short* le
           carry = 0;
       }
       itoa(sum, chr_chunk, 10); // convert sum to string
-      strcat(chr_num, strrev(chr_chunk)); // append to number
+      chr_chunk_len = strlen(chr_chunk);
 
-      if(strlen(chr_chunk) < CHUNK_SIZE) {
+      for(int j = 0; j < chr_chunk_len; j++) chr_num[j + out_len] = strrev(chr_chunk)[j];
+      // strncpy(chr_num + out_len, strrev(chr_chunk), CHUNK_SIZE); // append
+      if(chr_chunk_len < CHUNK_SIZE) {
         // append zeros to chr_num using for loop
-        short chr_num_len = strlen(chr_num);
-        for(short j = chr_num_len; j < chr_num_len + CHUNK_SIZE - strlen(chr_chunk); j++) strcat(chr_num, "0");
+        for(short j = chr_chunk_len; j < chr_chunk_len + CHUNK_SIZE - chr_chunk_len; j++) strcat(chr_num, "0");
       }
 
       out_len += CHUNK_SIZE;
@@ -90,20 +84,27 @@ uint16_t* add_bigints(uint16_t*bigint1, short* len1, uint16_t*bigint2, short* le
 
     if (carry == 1) strcat(chr_num, "1"); out_len+=1; // add carry if needed
     
-    strncpy(chr_num, strrev(chr_num), out_len); // copy only the needed part of the number (without random symbols)
-
-    return str_to_bigint(chr_num, len3);
+    strncpy(chr_num + out_len, strrev(chr_chunk), CHUNK_SIZE);  // copy only the needed part of the number (without random symbols)
+   
+    uint16_t* bigint3[out_len];
+    
+		printf("String number2323232323 %s\n", strrev(chr_num));
+    str_to_bigint(strrev(chr_num), &bigint3);
+    return bigint3; // return the result
 }
 
-void print_bigint(uint16_t *bigint, short* len) {
+void print_bigint(uint16_t* bigint, short* len) {
     /*print bigtint array and if item length is less than chunk_size then add leading zeros to print*/
     printf("%hu,", bigint[0]);
-    for(int i = 1; i < *len; i++) printf("%0*hu,", CHUNK_SIZE, bigint[i]);
+    for(int i = 1; i < OUT_NUMBER_LEN; i++) {
+      short a = bigint[i];
+      printf("%0*hu,", CHUNK_SIZE, bigint[i]);
+      }
 		printf("\n");
 }
 
 void reverse_array(uint16_t arr[], short n) {
-    int aux[n];
+    uint16_t aux[n];
     for (int i = 0; i < n; i++) aux[n - 1 - i] = arr[i];
     for (int i = 0; i < n; i++) arr[i] = aux[i];
 }
@@ -111,34 +112,38 @@ void reverse_array(uint16_t arr[], short n) {
 int main()
 {
     snprintf(EMPTY_CHUNK, sizeof(EMPTY_CHUNK), "%0*i", CHUNK_SIZE, 0);
+
     /*Number 1*/
-		char number1[] = "115792089237316195423570985008687907853269984665640564039457584007913129639936";
-		// char number1[] = "5000000000000000000000000000000000000000000000";
+		char number1[] = "340282366920938463463374607431768211455";
+    // char number1[NUMBER_SIZE + 1];
 
-		printf("String number1 %s\n", number1);
-    short len1 = 0;
+    printf("Enter number1: ");
+    // gets(number1);
+		printf("String number1 %s\n", number1); // or just number1 if reading from console
 
-		uint16_t* bigint1 = str_to_bigint(number1, &len1);
+		uint16_t* bigint1[NUMBER_SIZE];
+    str_to_bigint(number1, &bigint1);
 
 		printf("bigint array1 ");
-		print_bigint(bigint1, &len1);
+		print_bigint(bigint1, OUT_NUMBER_LEN);
 
     /*Number 2*/
-    char number2[] = "912415373636592080147267228649611544136934419016527019426904852909";
-    // char number2[] = "5000000000000000000000000000000000000000000000";
-
+    char number2[] = "250026244553818629560840097906942367043";
+    //char number2[NUMBER_SIZE + 1];
+    
+    printf("Enter number2: ");
+    // gets(number2);
 		printf("String number2 %s\n", number2);
-    short len2 = 0;
 
-		uint16_t* bigint2 = str_to_bigint(number2, &len2);
-
+		uint16_t bigint2[NUMBER_SIZE];
+    str_to_bigint(number2, &bigint2);
 		printf("bigint array2 ");
-		print_bigint(bigint2, &len2);
+		print_bigint(bigint2, NUMBER_SIZE);
 
     /*Add bigints*/
-    short len3 = 0;
-    uint16_t* result_addition = add_bigints(bigint1, &len1, bigint2, &len2, &len3);
-    printf("bigint1 + bigint2 = ");
-		print_bigint(result_addition, &len3);
+    short len_out = 0;
+    uint16_t* result_addition = add_bigints(bigint1, bigint2, &len_out);
+    printf("bigint1 + bigint2 result = ");
+		print_bigint(&result_addition, &len_out);
     return 0;
 }

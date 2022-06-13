@@ -7,7 +7,8 @@ class SubConnector:
     def __init__(self, c_file_path):
         # make file????
         self._c_file_path = c_file_path  # path to the .c file
-        self._cmd = subprocess.Popen([f'make all & ./{c_file_path}'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        self._cmd = subprocess.Popen([f'cd c_code & make all & ./{c_file_path}'], stdout=subprocess.PIPE,
+                                     stdin=subprocess.PIPE, shell=True)
 
     def execute_cmd(self, command):
         '''Execute command (pass the input to the shell)'''
@@ -28,7 +29,7 @@ class SubConnector:
             lines.append(line.strip())
         return lines
 
-    def get_results(self, result_pattern='Result: '):
+    def get_results(self, result_pattern='result = '):
         '''Return only results from subprocess output'''
         out = self.get_full_output()
         print('OUT:', out)
