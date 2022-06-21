@@ -6,6 +6,7 @@
 
 #define CHUNK_SIZE 4
 #define IN_NUMBER_LEN 39 //128 bit
+#define IN_NUMBER_HEX_LEN 32 //128 bit
 
 
 #define NUMBER_SIZE IN_NUMBER_LEN //16 * CHUNK_SIZE
@@ -15,7 +16,7 @@ char EMPTY_CHUNK[CHUNK_SIZE];
 const short CARRY_THRESHOLD = 9999;//pow(10, CHUNK_SIZE) - 1; // calculate the carry threshold (chunk size = 4 -> 9999)
 
 void reverse_array(uint16_t arr[], short n);
-
+void print_bigint(uint16_t* bigint, short* len);
 
 void str_to_bigint(char* number, uint16_t* int_array) {
     /* Unsigned 16 bit number range: 0 to 65535
@@ -51,56 +52,62 @@ uint16_t* add_bigints(uint16_t bigint1[], uint16_t bigint2[], short* len3) {
     short b1 = 0, b2 = 0;
     short i, carry = 0, sum = 0, out_len = 1, chr_chunk_len = 0;
 
-    char chr_num[NUMBER_SIZE + 2], chr_chunk[CHUNK_SIZE];
-    chr_num[0] = '\0';
+    char chr_num[NUMBER_SIZE + 1] = "";
 
-    for (i = OUT_NUMBER_LEN - 1; i >= 0; i--) { // loop trough array and add numbers
-        b1 = bigint1[i], b2 = bigint2[i];
-        b1 = b1 < 0 ? 0 : b1; // if we are out of chunks -> set value to 0
-        b2 = b2 < 0 ? 0 : b2;
+    {
+        char chr_chunk[CHUNK_SIZE];
+        for (i = OUT_NUMBER_LEN - 1; i >= 0; i--) { // loop trough array and add numbers
+            b1 = bigint1[i], b2 = bigint2[i];
+            b1 = b1 < 0 ? 0 : b1; // if we are out of chunks -> set value to 0
+            b2 = b2 < 0 ? 0 : b2;
 
-        sum = b1 + b2 + carry;
+            sum = b1 + b2 + carry;
 
-        if (sum > CARRY_THRESHOLD) { // if sum is bigger than 9999 - add carry
-            sum -= CARRY_THRESHOLD + 1;
-            carry = 1;
+            if (sum > CARRY_THRESHOLD) { // if sum is bigger than 9999 - add carry
+                sum -= CARRY_THRESHOLD + 1;
+                carry = 1;
+            }
+            else {
+                carry = 0;
+            }
+            _itoa(sum, chr_chunk, 10); // convert sum to string
+            chr_chunk_len = strlen(chr_chunk);
+
+            strcat(chr_num, _strrev(chr_chunk)); // append to number
+
+            // for (short j = 0; j < chr_chunk_len; j++) chr_num[j + out_len] = chr_chunk[j];
+
+            // strncpy(chr_num + out_len, strrev(chr_chunk), CHUNK_SIZE); // append
+            if (chr_chunk_len < CHUNK_SIZE) {
+                // append zeros to chr_num using for loop
+                for (short j = chr_chunk_len; j < CHUNK_SIZE; j++) strcat(chr_num, "0");
+            }
+
+            out_len += CHUNK_SIZE;
         }
-        else {
-            carry = 0;
-        }
-        _itoa(sum, chr_chunk, 10); // convert sum to string
-        chr_chunk_len = strlen(chr_chunk);
-
-        strcat(chr_num, _strrev(chr_chunk)); // append to number
-
-        // for (short j = 0; j < chr_chunk_len; j++) chr_num[j + out_len] = chr_chunk[j];
-
-        // strncpy(chr_num + out_len, strrev(chr_chunk), CHUNK_SIZE); // append
-        if (chr_chunk_len < CHUNK_SIZE) {
-            // append zeros to chr_num using for loop
-            for (short j = chr_chunk_len; j < CHUNK_SIZE; j++) chr_num[j + out_len] = '0';
-        }
-
-        out_len += CHUNK_SIZE;
     }
-
-    if (carry == 1) { chr_num[out_len] =  '1'; out_len++; } // add carry if needed
+    if (carry == 1) { strcat(chr_num, "1"); out_len++; } // add carry if needed
     out_len--;
 
-    uint16_t* bigint3 = (uint16_t*)malloc(out_len * sizeof(uint16_t));
+    uint16_t* bigint3[NUMBER_SIZE + 1];
     str_to_bigint(_strrev(chr_num), &bigint3);
+    printf("bigint1 + bigint2 result = ");
+    print_bigint(bigint3, NUMBER_SIZE + 1);
+
+    *len3 = NUMBER_SIZE + 1;
+  
     return bigint3; // return the result
 }
 
 void print_bigint(uint16_t* bigint, short* len) {
     /*print bigtint array and if item length is less than chunk_size then add leading zeros to print*/
-    printf("%hu,", bigint[0]);
-    for (int i = 1; i < OUT_NUMBER_LEN; i++) printf("%0*hu,", CHUNK_SIZE, bigint[i]);
+    printf("%hu", bigint[0]);
+    for (int i = 1; i < OUT_NUMBER_LEN; i++) printf("%0*hu", CHUNK_SIZE, bigint[i]);
     printf("\n");
 }
 
 void reverse_array(uint16_t arr[], short n) {
-    uint16_t* aux = malloc(n * sizeof(uint16_t));
+    uint16_t* aux = (uint16_t*)calloc(n, sizeof(uint16_t));
     for (int i = 0; i < n; i++) aux[n - 1 - i] = arr[i];
     for (int i = 0; i < n; i++) arr[i] = aux[i];
 }
@@ -110,11 +117,13 @@ int main()
     snprintf(EMPTY_CHUNK, sizeof(EMPTY_CHUNK), "%0*i", CHUNK_SIZE, 0);
 
     /*Number 1*/
-    char number1[] = "340282366920938463463374607431768211455";
-    // char number1[NUMBER_SIZE + 1];
+    // char number1[] = "340282366920938463463374607431768211455"; // 340282366920938463463374607431768211455 // FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    char number1_hex[IN_NUMBER_HEX_LEN + 1];
+    char number1[NUMBER_SIZE + 1];
 
     printf("Enter number1: ");
-    // gets(number1);
+    gets(number1_hex);
+    sscanf(number1_hex, "%x", &number1);
     printf("String number1 %s\n", number1); // or just number1 if reading from console
 
     uint16_t* bigint1[NUMBER_SIZE];
@@ -124,11 +133,13 @@ int main()
     print_bigint(bigint1, OUT_NUMBER_LEN);
 
     /*Number 2*/
-    char number2[] = "250026244553818629560840097906942367043";
-    //char number2[NUMBER_SIZE + 1];
+    // char number2[] = "250026244553818629560840097906942367043"; // 250026244553818629560840097906942367043 // BC194D99B948CB2AA6DF6B892BB95543
+    char number2_hex[IN_NUMBER_HEX_LEN + 1];
+    char number2[NUMBER_SIZE + 1];
 
     printf("Enter number2: ");
-    // gets(number2);
+    gets(number2_hex);
+    sscanf(number2_hex, "%x", &number2);
     printf("String number2 %s\n", number2);
 
     uint16_t bigint2[NUMBER_SIZE];
@@ -138,8 +149,9 @@ int main()
 
     /*Add bigints*/
     short len_out = 0;
-    uint16_t* result_addition = add_bigints(bigint1, bigint2, &len_out);
-    printf("bigint1 + bigint2 result = ");
-    print_bigint(&result_addition, &len_out);
+    uint16_t* result_addition;
+    result_addition = add_bigints(bigint1, bigint2, &len_out);
+    // printf("bigint1 + bigint2 result = ");
+    // print_bigint(result_addition, NUMBER_SIZE + 1);
     return 0;
 }
