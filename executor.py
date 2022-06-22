@@ -1,6 +1,6 @@
 import os
 import json
-
+import random
 from connectors.subconnector import SubConnector
 
 
@@ -20,6 +20,27 @@ class Executor:
 
             if verify_results:  # compare the returned results with the expected results if needed
                 self.verify_results(test)
+            self._connector.restart()  # restart program
+            print('__________________________________________________')
+        self._connector.disconnect()  # close connection
+        print(f'Done!')
+
+    def run_random(self, N):
+        '''Perform random tests'''
+        for n in range(N):
+            print(f'Executing test {n}')
+            n1 = random.getrandbits(128)
+            n2 = random.getrandbits(128)
+            pred_res = str(n1 + n2)
+            print(f'n1 = {n1}\nn2 = {n2}\nres = {pred_res}')
+
+            n1 = str(n1).encode('utf-8').hex()
+            n2 = str(n2).encode('utf-8').hex()
+            self._connector.execute_cmd(n1)
+            self._connector.execute_cmd(n2)
+            real_result = self._connector.get_results()[0]
+            assert pred_res == real_result, f'Output is not as expected; {pred_res} == {real_result}'
+            print(f'Output is as expected; {pred_res} == {real_result}')
             self._connector.restart()  # restart program
             print('__________________________________________________')
         self._connector.disconnect()  # close connection

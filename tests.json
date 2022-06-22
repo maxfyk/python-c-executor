@@ -1,41 +1,17 @@
 {
   "tests": [
     {
-      "name": "multiplication",
+      "name": "addition1",
       "commands": [
         {
-          "input": 23,
+          "input": "340282366920938463463374607431768211455",
           "output": null
         },
         {
-          "input": 32.5,
-          "output": null
-        },
-        {
-          "input": "*",
+          "input": "250026244553818629560840097906942367043",
           "output": {
-            "type": "float",
-            "value": "747.5"
-          }
-        }
-      ]
-    },
-    {
-      "name": "division",
-      "commands": [
-        {
-          "input": 424.2,
-          "output": null
-        },
-        {
-          "input": 24.1532,
-          "output": null
-        },
-        {
-          "input": "/",
-          "output": {
-            "type": "float",
-            "value": "17.56289"
+            "type": "string",
+            "value": "590308611474757093024214705338710578498"
           }
         }
       ]
