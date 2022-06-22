@@ -34,9 +34,8 @@ class Executor:
             pred_res = str(n1 + n2)
             print(f'n1 = {n1}\nn2 = {n2}\nres = {pred_res}')
 
-            n1 = hex(int(str(n1), 16))[2:]
-            n2 = hex(int(str(n2), 16))[2:]
-            print(n1, n2)
+            n1 = str(n1).encode('utf-8').hex()
+            n2 = str(n2).encode('utf-8').hex()
             self._connector.execute_cmd(n1)
             self._connector.execute_cmd(n2)
             real_result = self._connector.get_results()[0]

@@ -6,7 +6,7 @@
 
 #define CHUNK_SIZE 4
 #define IN_NUMBER_LEN 39 //128 bit
-#define IN_NUMBER_HEX_LEN 32 //128 bit
+#define IN_NUMBER_HEX_LEN 78 //128 bit
 
 
 #define NUMBER_SIZE IN_NUMBER_LEN //16 * CHUNK_SIZE
@@ -112,6 +112,21 @@ void reverse_array(uint16_t arr[], short n) {
     for (int i = 0; i < n; i++) arr[i] = aux[i];
 }
 
+char hex_to_dec(char hex[], char text[]){
+    int i = 0, j = 0;
+    while(hex[i]){
+        int up = '0' <= hex[i] && hex[i] <= '9' ? hex[i] - '0' : hex[i] - 'a' + 10;//lowcase
+        if(hex[++i] == '\0'){
+            return -1;
+        }
+        int low = '0' <= hex[i] && hex[i] <= '9' ? hex[i] - '0' : hex[i] - 'a' + 10;//lowcase
+        text[j++] = up * 16 + low;
+        ++i;
+    }
+    text[j] = 0;
+    return text;
+}
+
 int main()
 {
     snprintf(EMPTY_CHUNK, sizeof(EMPTY_CHUNK), "%0*i", CHUNK_SIZE, 0);
@@ -123,7 +138,8 @@ int main()
 
     printf("Enter number1: ");
     gets(number1_hex);
-    sscanf(number1_hex, "%x", &number1);
+    hex_to_dec(number1_hex, number1);
+
     printf("String number1 %s\n", number1); // or just number1 if reading from console
 
     uint16_t* bigint1[NUMBER_SIZE];
@@ -139,7 +155,7 @@ int main()
 
     printf("Enter number2: ");
     gets(number2_hex);
-    sscanf(number2_hex, "%x", &number2);
+    hex_to_dec(number2_hex, number2);
     printf("String number2 %s\n", number2);
 
     uint16_t bigint2[NUMBER_SIZE];
