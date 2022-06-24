@@ -70,7 +70,7 @@ uint16_t* add_bigints(uint16_t bigint1[], uint16_t bigint2[], short* len3) {
             else {
                 carry = 0;
             }
-            _itoa(sum, chr_chunk, 10); // convert sum to string
+            sprintf(chr_chunk, "%d", sum); // convert sum to string
             chr_chunk_len = strlen(chr_chunk);
 
             strcat(chr_num, _strrev(chr_chunk)); // append to number
