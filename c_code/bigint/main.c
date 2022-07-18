@@ -1,8 +1,14 @@
+#include <hal.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+
+#ifdef STM32F4  // assembler demo only for the target device
+int test_asm(int);
+extern int somedata; // = 0x12345678;
+#endif
 
 #define CHUNK_SIZE 4
 #define IN_NUMBER_LEN 39 //128 bit
@@ -48,7 +54,7 @@ void str_to_bigint(char* number, uint16_t* int_array) {
     reverse_array(int_array, OUT_NUMBER_LEN); // reverse the number
 }
 
-uint16_t* add_bigints(uint16_t bigint1[], uint16_t bigint2[], short* len3) {
+void add_bigints(uint16_t bigint1[], uint16_t bigint2[], short* len3) {
     short b1 = 0, b2 = 0;
     short i, carry = 0, sum = 0, out_len = 1, chr_chunk_len = 0;
 
@@ -70,7 +76,7 @@ uint16_t* add_bigints(uint16_t bigint1[], uint16_t bigint2[], short* len3) {
             else {
                 carry = 0;
             }
-            sprintf(chr_chunk, "%d", sum); // convert sum to string
+            _itoa(sum, chr_chunk, 10); // convert sum to string
             chr_chunk_len = strlen(chr_chunk);
 
             strcat(chr_num, _strrev(chr_chunk)); // append to number
@@ -94,9 +100,7 @@ uint16_t* add_bigints(uint16_t bigint1[], uint16_t bigint2[], short* len3) {
     printf("bigint1 + bigint2 result = ");
     print_bigint(bigint3, NUMBER_SIZE + 1);
 
-    *len3 = NUMBER_SIZE + 1;
-  
-    return bigint3; // return the result
+    exit(0);
 }
 
 void print_bigint(uint16_t* bigint, short* len) {
@@ -112,11 +116,11 @@ void reverse_array(uint16_t arr[], short n) {
     for (int i = 0; i < n; i++) arr[i] = aux[i];
 }
 
-char hex_to_dec(char hex[], char text[]){
+char hex_to_dec(char hex[], char text[]) {
     int i = 0, j = 0;
-    while(hex[i]){
+    while (hex[i]) {
         int up = '0' <= hex[i] && hex[i] <= '9' ? hex[i] - '0' : hex[i] - 'a' + 10;//lowcase
-        if(hex[++i] == '\0'){
+        if (hex[++i] == '\0') {
             return -1;
         }
         int low = '0' <= hex[i] && hex[i] <= '9' ? hex[i] - '0' : hex[i] - 'a' + 10;//lowcase
@@ -129,6 +133,8 @@ char hex_to_dec(char hex[], char text[]){
 
 int main()
 {
+    hal_setup();
+    hal_led_on();
     snprintf(EMPTY_CHUNK, sizeof(EMPTY_CHUNK), "%0*i", CHUNK_SIZE, 0);
 
     /*Number 1*/
@@ -165,9 +171,7 @@ int main()
 
     /*Add bigints*/
     short len_out = 0;
-    uint16_t* result_addition;
-    result_addition = add_bigints(bigint1, bigint2, &len_out);
-    // printf("bigint1 + bigint2 result = ");
-    // print_bigint(result_addition, NUMBER_SIZE + 1);
+    add_bigints(bigint1, bigint2, &len_out);
+    hal_led_off();
     return 0;
 }

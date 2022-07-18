@@ -21,16 +21,226 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.9.0
 Dialog DLL:      TCM.DLL V1.56.1.0
  
 <h2>Project:</h2>
-C:\Users\maxfyk\Documents\projects\sinica\bigint\bigint.uvprojx
+C:\Users\maxfyk\Documents\projects\sinica\python-c-executor\c_code\bigint\bigint.uvprojx
 Project File Date:  05/22/2022
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.18', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'Target 1'
+main.c(16): warning: no previous extern declaration for non-static variable 'CARRY_THRESHOLD' [-Wmissing-variable-declarations]
+const short CARRY_THRESHOLD = 9999;//pow(10, CHUNK_SIZE) - 1; // calculate the carry threshold (chunk size = 4 -> 9999)
+            ^
+main.c(16): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+const short CARRY_THRESHOLD = 9999;//pow(10, CHUNK_SIZE) - 1; // calculate the carry threshold (chunk size = 4 -> 9999)
+      ^
+main.c(25): warning: implicit conversion loses integer precision: 'unsigned int' to 'short' [-Wimplicit-int-conversion]
+    short chunk_num = 0, len = strlen(number);
+                         ~~~   ^~~~~~~~~~~~~~
+main.c(37): warning: array comparison always evaluates to false [-Wtautological-compare]
+        uint16_t int_chunk = chunk == EMPTY_CHUNK ? 0 : atoi(chunk); // convert chars to int (if char consists of only zeros = 0)
+                                   ^
+main.c(37): warning: implicit conversion loses integer precision: 'int' to 'uint16_t' (aka 'unsigned short') [-Wimplicit-int-conversion]
+        uint16_t int_chunk = chunk == EMPTY_CHUNK ? 0 : atoi(chunk); // convert chars to int (if char consists of only zeros = 0)
+                 ~~~~~~~~~                              ^~~~~~~~~~~
+main.c(37): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+        uint16_t int_chunk = chunk == EMPTY_CHUNK ? 0 : atoi(chunk); // convert chars to int (if char consists of only zeros = 0)
+                 ^
+main.c(43): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+        strncpy(chunk, number, i + CHUNK_SIZE);
+        ~~~~~~~                ~~^~~~~~~~~~~~
+main.c(44): warning: array comparison always evaluates to false [-Wtautological-compare]
+        uint16_t int_chunk = chunk == EMPTY_CHUNK ? 0 : atoi(chunk); // convert chars to int (if char consists of only zeros = 0)
+                                   ^
+main.c(44): warning: implicit conversion loses integer precision: 'int' to 'uint16_t' (aka 'unsigned short') [-Wimplicit-int-conversion]
+        uint16_t int_chunk = chunk == EMPTY_CHUNK ? 0 : atoi(chunk); // convert chars to int (if char consists of only zeros = 0)
+                 ~~~~~~~~~                              ^~~~~~~~~~~
+main.c(44): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+        uint16_t int_chunk = chunk == EMPTY_CHUNK ? 0 : atoi(chunk); // convert chars to int (if char consists of only zeros = 0)
+                 ^
+main.c(21): warning: no previous prototype for function 'str_to_bigint' [-Wmissing-prototypes]
+void str_to_bigint(char* number, uint16_t* int_array) {
+     ^
+main.c(21): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void str_to_bigint(char* number, uint16_t* int_array) {
+^
+static 
+main.c(60): warning: possible misuse of comma operator here [-Wcomma]
+            b1 = bigint1[i], b2 = bigint2[i];
+                           ^
+main.c(60): note: cast expression to void to silence warning
+            b1 = bigint1[i], b2 = bigint2[i];
+            ^~~~~~~~~~~~~~~
+            (void)(        )
+main.c(60): warning: implicit conversion changes signedness: 'uint16_t' (aka 'unsigned short') to 'short' [-Wsign-conversion]
+            b1 = bigint1[i], b2 = bigint2[i];
+                                ~ ^~~~~~~~~~
+main.c(60): warning: implicit conversion changes signedness: 'uint16_t' (aka 'unsigned short') to 'short' [-Wsign-conversion]
+            b1 = bigint1[i], b2 = bigint2[i];
+               ~ ^~~~~~~~~~
+main.c(73): warning: implicit declaration of function '_itoa' is invalid in C99 [-Wimplicit-function-declaration]
+            _itoa(sum, chr_chunk, 10); // convert sum to string
+            ^
+main.c(74): warning: implicit conversion loses integer precision: 'unsigned int' to 'short' [-Wimplicit-int-conversion]
+            chr_chunk_len = strlen(chr_chunk);
+                          ~ ^~~~~~~~~~~~~~~~~
+main.c(76): warning: implicit declaration of function '_strrev' is invalid in C99 [-Wimplicit-function-declaration]
+            strcat(chr_num, _strrev(chr_chunk)); // append to number
+                            ^
+main.c(76): warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'const char *' [-Wint-conversion]
+            strcat(chr_num, _strrev(chr_chunk)); // append to number
+                            ^~~~~~~~~~~~~~~~~~
+C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h(93): note: passing argument to parameter here
+extern _ARMABI char *strcat(char * __restrict /*s1*/, const char * __restrict /*s2*/) __attribute__((__nonnull__(1,2)));
+                                                                                    ^
+main.c(93): warning: implicit declaration of function '_strrev' is invalid in C99 [-Wimplicit-function-declaration]
+    str_to_bigint(_strrev(chr_num), &bigint3);
+                  ^
+main.c(93): warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'char *' [-Wint-conversion]
+    str_to_bigint(_strrev(chr_num), &bigint3);
+                  ^~~~~~~~~~~~~~~~
+main.c(21): note: passing argument to parameter 'number' here
+void str_to_bigint(char* number, uint16_t* int_array) {
+                         ^
+main.c(93): warning: incompatible pointer types passing 'uint16_t *(*)[40]' (aka 'unsigned short *(*)[40]') to parameter of type 'uint16_t *' (aka 'unsigned short *') [-Wincompatible-pointer-types]
+    str_to_bigint(_strrev(chr_num), &bigint3);
+                                    ^~~~~~~~
+main.c(21): note: passing argument to parameter 'int_array' here
+void str_to_bigint(char* number, uint16_t* int_array) {
+                                           ^
+main.c(95): warning: incompatible pointer types passing 'uint16_t *[40]' (aka 'unsigned short *[40]') to parameter of type 'uint16_t *' (aka 'unsigned short *') [-Wincompatible-pointer-types]
+    print_bigint(bigint3, NUMBER_SIZE + 1);
+                 ^~~~~~~
+main.c(19): note: passing argument to parameter 'bigint' here
+void print_bigint(uint16_t* bigint, short* len);
+                            ^
+main.c(95): warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'short *' [-Wint-conversion]
+    print_bigint(bigint3, NUMBER_SIZE + 1);
+                          ^~~~~~~~~~~~~~~
+main.c(12): note: expanded from macro 'NUMBER_SIZE'
+#define NUMBER_SIZE IN_NUMBER_LEN //16 * CHUNK_SIZE
+                    ^
+main.c(8): note: expanded from macro 'IN_NUMBER_LEN'
+#define IN_NUMBER_LEN 39 //128 bit
+                      ^
+main.c(19): note: passing argument to parameter 'len' here
+void print_bigint(uint16_t* bigint, short* len);
+                                           ^
+main.c(99): warning: incompatible pointer types returning 'uint16_t *[40]' (aka 'unsigned short *[40]') from a function with result type 'uint16_t *' (aka 'unsigned short *') [-Wincompatible-pointer-types]
+    return bigint3; // return the result
+           ^~~~~~~
+main.c(99): warning: address of stack memory associated with local variable 'bigint3' returned [-Wreturn-stack-address]
+    return bigint3; // return the result
+           ^~~~~~~
+main.c(92): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+    uint16_t* bigint3[NUMBER_SIZE + 1];
+              ^
+main.c(51): warning: no previous prototype for function 'add_bigints' [-Wmissing-prototypes]
+uint16_t* add_bigints(uint16_t bigint1[], uint16_t bigint2[], short* len3) {
+          ^
+main.c(51): note: declare 'static' if the function is not intended to be used outside of this translation unit
+uint16_t* add_bigints(uint16_t bigint1[], uint16_t bigint2[], short* len3) {
+^
+static 
+main.c(102): warning: unused parameter 'len' [-Wunused-parameter]
+void print_bigint(uint16_t* bigint, short* len) {
+                                           ^
+main.c(110): warning: implicit conversion changes signedness: 'short' to 'unsigned int' [-Wsign-conversion]
+    uint16_t* aux = (uint16_t*)calloc(n, sizeof(uint16_t));
+                               ~~~~~~ ^
+main.c(120): warning: implicit conversion changes signedness: 'int' to 'char' [-Wsign-conversion]
+            return -1;
+            ~~~~~~ ^~
+main.c(123): warning: implicit conversion loses integer precision: 'int' to 'char' [-Wimplicit-int-conversion]
+        text[j++] = up * 16 + low;
+                  ~ ~~~~~~~~^~~~~
+main.c(122): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+        int low = '0' <= hex[i] && hex[i] <= '9' ? hex[i] - '0' : hex[i] - 'a' + 10;//lowcase
+            ^
+main.c(127): warning: incompatible pointer to integer conversion returning 'char *' from a function with result type 'char'; dereference with * [-Wint-conversion]
+    return text;
+           ^~~~
+           *
+main.c(115): warning: no previous prototype for function 'hex_to_dec' [-Wmissing-prototypes]
+char hex_to_dec(char hex[], char text[]){
+     ^
+main.c(115): note: declare 'static' if the function is not intended to be used outside of this translation unit
+char hex_to_dec(char hex[], char text[]){
+^
+static 
+main.c(146): warning: incompatible pointer types passing 'uint16_t *(*)[39]' (aka 'unsigned short *(*)[39]') to parameter of type 'uint16_t *' (aka 'unsigned short *') [-Wincompatible-pointer-types]
+    str_to_bigint(number1, &bigint1);
+                           ^~~~~~~~
+main.c(21): note: passing argument to parameter 'int_array' here
+void str_to_bigint(char* number, uint16_t* int_array) {
+                                           ^
+main.c(149): warning: incompatible pointer types passing 'uint16_t *[39]' (aka 'unsigned short *[39]') to parameter of type 'uint16_t *' (aka 'unsigned short *') [-Wincompatible-pointer-types]
+    print_bigint(bigint1, OUT_NUMBER_LEN);
+                 ^~~~~~~
+main.c(102): note: passing argument to parameter 'bigint' here
+void print_bigint(uint16_t* bigint, short* len) {
+                            ^
+main.c(149): warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'short *' [-Wint-conversion]
+    print_bigint(bigint1, OUT_NUMBER_LEN);
+                          ^~~~~~~~~~~~~~
+main.c(13): note: expanded from macro 'OUT_NUMBER_LEN'
+#define OUT_NUMBER_LEN IN_NUMBER_LEN / CHUNK_SIZE + 1
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+main.c(8): note: expanded from macro 'IN_NUMBER_LEN'
+#define IN_NUMBER_LEN 39 //128 bit
+                      ^
+main.c(102): note: passing argument to parameter 'len' here
+void print_bigint(uint16_t* bigint, short* len) {
+                                           ^
+main.c(162): warning: incompatible pointer types passing 'uint16_t (*)[39]' (aka 'unsigned short (*)[39]') to parameter of type 'uint16_t *' (aka 'unsigned short *') [-Wincompatible-pointer-types]
+    str_to_bigint(number2, &bigint2);
+                           ^~~~~~~~
+main.c(21): note: passing argument to parameter 'int_array' here
+void str_to_bigint(char* number, uint16_t* int_array) {
+                                           ^
+main.c(164): warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'short *' [-Wint-conversion]
+    print_bigint(bigint2, NUMBER_SIZE);
+                          ^~~~~~~~~~~
+main.c(12): note: expanded from macro 'NUMBER_SIZE'
+#define NUMBER_SIZE IN_NUMBER_LEN //16 * CHUNK_SIZE
+                    ^~~~~~~~~~~~~
+main.c(8): note: expanded from macro 'IN_NUMBER_LEN'
+#define IN_NUMBER_LEN 39 //128 bit
+                      ^~
+main.c(102): note: passing argument to parameter 'len' here
+void print_bigint(uint16_t* bigint, short* len) {
+                                           ^
+main.c(169): warning: incompatible pointer types passing 'uint16_t *[39]' (aka 'unsigned short *[39]') to parameter of type 'uint16_t *' (aka 'unsigned short *') [-Wincompatible-pointer-types]
+    result_addition = add_bigints(bigint1, bigint2, &len_out);
+                                  ^~~~~~~
+main.c(51): note: passing argument to parameter 'bigint1' here
+uint16_t* add_bigints(uint16_t bigint1[], uint16_t bigint2[], short* len3) {
+                               ^
+main.c(136): warning: mixing declarations and code is incompatible with standards before C99 [-Wdeclaration-after-statement]
+    char number1_hex[IN_NUMBER_HEX_LEN + 1];
+         ^
+main.c(168): warning: variable 'result_addition' set but not used [-Wunused-but-set-variable]
+    uint16_t* result_addition;
+              ^
+main.c(15): warning: no previous extern declaration for non-static variable 'EMPTY_CHUNK' [-Wmissing-variable-declarations]
+char EMPTY_CHUNK[CHUNK_SIZE];
+     ^
+main.c(15): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+char EMPTY_CHUNK[CHUNK_SIZE];
+^
+42 warnings generated.
 compiling main.c...
+compiling system_stm32f4xx.c...
 linking...
-Program Size: Code=19640 RO-data=1096 RW-data=12 ZI-data=1888  
-".\Objects\bigint.axf" - 0 Error(s), 0 Warning(s).
+.\Objects\bigint.axf: Error: L6218E: Undefined symbol _itoa (referred from main.o).
+.\Objects\bigint.axf: Error: L6218E: Undefined symbol _strrev (referred from main.o).
+.\Objects\bigint.axf: Error: L6218E: Undefined symbol __use_two_region_memory (referred from startup_stm32f407xx.o).
+.\Objects\bigint.axf: Error: L6218E: Undefined symbol __initial_sp (referred from entry2.o).
+.\Objects\bigint.axf: Error: L6218E: Undefined symbol __heap_base (referred from malloc.o).
+.\Objects\bigint.axf: Error: L6218E: Undefined symbol __heap_limit (referred from malloc.o).
+Not enough information to list image symbols.
+Not enough information to list load addresses in the image map.
+Finished: 2 information, 0 warning and 6 error messages.
+".\Objects\bigint.axf" - 6 Error(s), 42 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -56,12 +266,13 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.6.0
 
    * Component: Keil::Device:Startup:2.6.3
-      Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c
       Source file:   MDK/Device/Source/ARM/STM32F4xx_OTP.s
-      Source file:   MDK/Device/Source/ARM/STM32F40xxx_41xxx_OPT.s
       Include file:  Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
+      Source file:   MDK/Device/Source/ARM/STM32F40xxx_41xxx_OPT.s
       Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/arm/startup_stm32f407xx.s
-Build Time Elapsed:  00:00:00
+      Source file:   Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c
+Target not created.
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

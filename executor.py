@@ -2,7 +2,7 @@ import os
 import json
 import random
 from connectors.subconnector import SubConnector
-
+from connectors.boardconnector import BoardConnector
 
 class Executor:
     def __init__(self, connector, tests_file_path, **kwargs):
@@ -89,7 +89,7 @@ class Executor:
         '''Establish connection depending on the selected connector'''
         if connector == 'subprocess':
             return SubConnector(kwargs['c_file_path'])
-        # elif connector == 'ssh':
-        #     return SSHConnector()
+        elif connector == 'boardconnector':
+            return BoardConnector(kwargs['c_file_path'], kwargs['tty'])
         else:
             raise ValueError('Unknown connector')

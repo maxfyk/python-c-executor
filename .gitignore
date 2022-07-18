@@ -145,7 +145,7 @@ c_code/bigint/RTE/Device/STM32F407VGTx/.startup_stm32f407xx.s@2.6.2
 c_code/bigint/RTE/Device/STM32F407VGTx/.system_stm32f4xx.c@2.6.3
 c_code/bigint/RTE/Device/STM32F407VGTx/startup_stm32f407xx.s
 c_code/bigint/RTE/Device/STM32F407VGTx/system_stm32f4xx.c
-c_code/calculator.exe
-c_code/calculator.exe
-c_code/calculator.exe
-c_code/calculator.exe
+c_code/calculator/calculator.exe
+c_code/calculator/calculator.exe
+c_code/calculator/calculator.exe
+c_code/calculator/calculator.exe
