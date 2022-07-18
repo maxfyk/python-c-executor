@@ -2,7 +2,7 @@ import os
 import serial
 import subprocess
 
-COMPILER_COMMANDS = ['cd arm-compiler',
+COMPILER_COMMANDS = ['ls','cd arm-compiler',
                      'cp c_file_path demo.c',
                      'make TARGET=stm32f4 demo.bin',
                      'st-flash write build/demo.bin 0x8000000',
@@ -19,10 +19,8 @@ class BoardConnector:
 
         self._serial = serial.Serial(self.tty, 115200)
         self._cmd = subprocess.Popen(COMPILER_COMMANDS,
-                                     stdout=subprocess.PIPE,
                                      stdin=subprocess.PIPE, shell=True, env=os.environ)
         self._st_util = subprocess.Popen([f'st-util'],
-                                         stdout=subprocess.PIPE,
                                          stdin=subprocess.PIPE, shell=True, env=os.environ)
 
     def execute_cmd(self, command):
