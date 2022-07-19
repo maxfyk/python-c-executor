@@ -79,7 +79,7 @@ class Executor:
                         return tests_list
 
                 raise ValueError('tests list is empty')
-            except ValueError as e:
+
                 raise ValueError('Input file is not a valid JSON file')
 
         raise ValueError('File does not exist')
